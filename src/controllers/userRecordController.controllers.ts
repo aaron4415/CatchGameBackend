@@ -24,7 +24,6 @@ export class UserRecordController {
     const userRecord = new UserRecord();
     userRecord.name = name;
     userRecord.score = score;
-    userRecord.createAt = new Date();
     const userRecordRepository = AppDataSource.getRepository(UserRecord);
     await userRecordRepository.save(userRecord);
     return res

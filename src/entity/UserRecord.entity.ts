@@ -10,7 +10,4 @@ export class UserRecord {
 
   @Column()
   name: string;
-
-  @Column()
-  createAt: Date;
 }
