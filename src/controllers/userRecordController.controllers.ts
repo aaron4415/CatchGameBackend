@@ -8,6 +8,7 @@ export class UserRecordController {
     const userRecords = await userRecordRepository
       .createQueryBuilder("user_record")
       .orderBy("user_record.score", "DESC")
+      .take(100)
       .getMany();
 
     // Assign ranking based on the order in the array

@@ -37,7 +37,7 @@ Body: JSON object with the following structure:
     ...
   ]
 }
-Description: An array of user records with additional ranking property assigned based on the order in the array.
+Description: An array of first 100 user records with additional ranking property assigned based on the order in the array.
 
 POST /create/userRecord:
 
