@@ -6,8 +6,8 @@ export class UserRecordController {
   static async getLeaderboard(req: Request, res: Response) {
     const userRecordRepository = AppDataSource.getRepository(UserRecord);
     const userRecords = await userRecordRepository
-      .createQueryBuilder("userRecord")
-      .orderBy("userRecord.score", "DESC")
+      .createQueryBuilder("user_record")
+      .orderBy("user_record.score", "DESC")
       .getMany();
 
     // Assign ranking based on the order in the array

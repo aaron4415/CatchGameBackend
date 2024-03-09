@@ -1,17 +1,20 @@
 import { AppDataSource } from "./data-source";
-import * as express from "express";
+import express from "express";
 import * as dotenv from "dotenv";
 import { Request, Response } from "express";
 import { userRecordroute } from "./routes/userRecordroutes";
 import "reflect-metadata";
 import { errorHandler } from "./middlewares/error.middleware";
+import cors from "cors";
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use(errorHandler);
+app.use(cors());
+
 const { PORT } = process.env;
-app.use("/user", userRecordroute);
+app.use("/", userRecordroute);
 
 app.get("*", (req: Request, res: Response) => {
   res.status(505).json({ message: "Bad Request" });
