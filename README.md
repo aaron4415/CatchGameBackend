@@ -1,4 +1,6 @@
-Steps to run this project:
+Steps to run this project: 
+
+Go to the project directory,
 
 1. Run `npm i` command
 2. Set up a PostgreSQL database. Ensure that you have PostgreSQL installed on your machine and have access to a PostgreSQL server.
