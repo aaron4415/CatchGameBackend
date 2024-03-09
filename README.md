@@ -12,12 +12,19 @@ API Documentation:
 GET /leaderboard:
 
 Description: Retrieves the leaderboard data, which includes user records sorted by score in descending order.
+
 Method: GET
+
 Endpoint: /leaderboard
+
 Controller method: getLeaderboard
+
 Request body: None
+
 Response:
+
 Status code: 200 (OK)
+
 Body: JSON object with the following structure:
 {
   "data": [
@@ -35,16 +42,23 @@ Description: An array of user records with additional ranking property assigned 
 POST /create/userRecord:
 
 Description: Creates a new user record with the provided name and score.
+
 Method: POST
+
 Endpoint: /create/userRecord
+
 Controller method: createUserRecord
+
 Request body:
 {
   "name": string,
   "score": string
 }
+
 Response:
+
 Status code: 200 (OK)
+
 Body: JSON object with the following structure:
 {
   "message": "User record created successfully",
