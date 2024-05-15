@@ -14,8 +14,6 @@ app.use(errorHandler);
 app.use(cors());
 
 const { PORT } = process.env;
-app.use("/", userRecordroute);
-
 // app.get("*", (req: Request, res: Response) => {
 //   res.status(505).json({ message: "Bad Request" });
 // });
@@ -28,5 +26,7 @@ AppDataSource.initialize()
     console.log("Data Source has been initialized!");
   })
   .catch((error) => console.log(error));
+
+app.use("/", userRecordroute);
 
 export default app;
