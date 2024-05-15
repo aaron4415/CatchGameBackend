@@ -5,6 +5,7 @@ import { UserRecord } from "./entity/UserRecord.entity";
 import * as dotenv from "dotenv";
 
 dotenv.config();
+console.log("Entities:", [UserRecord]); // Debug log
 
 const { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_DATABASE, NODE_ENV } =
   process.env;
