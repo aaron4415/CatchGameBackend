@@ -6,6 +6,7 @@ import { userRecordroute } from "./routes/userRecordroutes";
 import "reflect-metadata";
 import { errorHandler } from "./middlewares/error.middleware";
 import cors from "cors";
+import { DataSource } from "typeorm";
 dotenv.config();
 
 const app = express();
@@ -20,12 +21,20 @@ const { PORT } = process.env;
 
 AppDataSource.initialize()
   .then(async () => {
-    app.listen(PORT, () => {
-      console.log("Server is running on http://localhost:" + PORT);
-    });
-    console.log("Data Source has been initialized!");
+    console.log("Connection initialized with database...");
   })
   .catch((error) => console.log(error));
+
+export const getDataSource = (delay = 3000): Promise<DataSource> => {
+  if (AppDataSource.isInitialized) return Promise.resolve(AppDataSource);
+
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (AppDataSource.isInitialized) resolve(AppDataSource);
+      else reject("Failed to create connection with database");
+    }, delay);
+  });
+};
 
 app.use("/", userRecordroute);
 
