@@ -1,12 +1,11 @@
-import "reflect-metadata";
-import { AppDataSource } from "./data-source";
 import express from "express";
 import * as dotenv from "dotenv";
 import { Request, Response } from "express";
 import { userRecordroute } from "./routes/userRecordroutes";
-import "reflect-metadata";
 import { errorHandler } from "./middlewares/error.middleware";
 import cors from "cors";
+import { pool } from "./db";
+
 dotenv.config();
 
 const app = express();
@@ -15,19 +14,20 @@ app.use(errorHandler);
 app.use(cors());
 
 const { PORT } = process.env;
-// app.get("*", (req: Request, res: Response) => {
-//   res.status(505).json({ message: "Bad Request" });
-// });
+
 async function initDbConnection() {
-  await AppDataSource.initialize()
-    .then(async () => {
-      app.listen(PORT, () => {
-        console.log("Server is running on http://localhost:" + PORT);
-      });
-      console.log("Data Source has been initialized!");
-    })
-    .catch((error) => console.log(error));
+  app.listen(PORT, () => {
+    console.log("Server is running on http://localhost:" + PORT);
+  });
+
+  try {
+    await pool.connect();
+    console.log("Connected to database successfully!");
+  } catch (error) {
+    console.error("Error connecting to database: ", error);
+  }
 }
+
 initDbConnection();
 
 app.use("/", userRecordroute);

@@ -1,34 +1,51 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../data-source";
 import { UserRecord } from "../entity/UserRecord.entity";
+import { pool } from "../db";
 
 export class UserRecordController {
   static async getLeaderboard(req: Request, res: Response) {
-    const userRecordRepository = AppDataSource.getRepository(UserRecord);
-    const userRecords = await userRecordRepository
-      .createQueryBuilder("user_record")
-      .orderBy("user_record.score", "DESC")
-      .take(100)
-      .getMany();
+    try {
+      const client = await pool.connect();
 
-    // Assign ranking based on the order in the array
-    const rankedUserRecords = userRecords.map((userRecord, index) => ({
-      ...userRecord,
-      ranking: index + 1,
-    }));
-    return res.status(200).json({
-      data: rankedUserRecords,
-    });
+      const queryResult = await client.query(
+        "SELECT * FROM user_record ORDER BY score DESC LIMIT 100"
+      );
+
+      const rankedUserRecords = queryResult.rows.map((userRecord, index) => ({
+        ...userRecord,
+        ranking: index + 1,
+      }));
+
+      client.release();
+
+      return res.status(200).json({ data: rankedUserRecords });
+    } catch (error) {
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
   }
+
   static async createUserRecord(req: Request, res: Response) {
-    const { name, score } = req.body;
-    const userRecord = new UserRecord();
-    userRecord.name = name;
-    userRecord.score = score;
-    const userRecordRepository = AppDataSource.getRepository(UserRecord);
-    await userRecordRepository.save(userRecord);
-    return res
-      .status(200)
-      .json({ message: "User record created successfully", userRecord });
+    try {
+      const { name, score } = req.body;
+
+      const client = await pool.connect();
+
+      await client.query(
+        "INSERT INTO user_record (name, score) VALUES ($1, $2)",
+        [name, score]
+      );
+
+      client.release();
+
+      return res
+        .status(200)
+        .json({
+          message: "User record created successfully",
+          userRecord: { name, score },
+        });
+    } catch (error) {
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
   }
 }
