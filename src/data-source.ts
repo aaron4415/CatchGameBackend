@@ -23,4 +23,7 @@ export const AppDataSource = new DataSource({
   entities: [UserRecord],
   migrations: [__dirname + "/migration/*.ts"],
   subscribers: [],
+  extra: {
+    ssl: true,
+  },
 });

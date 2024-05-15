@@ -16,9 +16,9 @@ app.use(cors());
 const { PORT } = process.env;
 app.use("/", userRecordroute);
 
-app.get("*", (req: Request, res: Response) => {
-  res.status(505).json({ message: "Bad Request" });
-});
+// app.get("*", (req: Request, res: Response) => {
+//   res.status(505).json({ message: "Bad Request" });
+// });
 
 AppDataSource.initialize()
   .then(async () => {
